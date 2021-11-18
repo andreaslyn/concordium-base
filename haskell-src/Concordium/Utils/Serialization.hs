@@ -264,3 +264,11 @@ getBool = getWord8 >>= \case
   0 -> return False
   1 -> return True
   n -> fail $ "Unrecognized boolean value: " ++ show n
+
+-- |Fail if 'ByteString' is non-empty.
+failIfNonempty :: a -> Get a
+failIfNonempty a = do
+    ok <- isEmpty
+    if ok
+        then return a
+        else fail "unexpected data left in string"
